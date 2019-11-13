@@ -980,31 +980,31 @@ public class AnalisadorSintatico {
             switch (prioridade) {
 
                 case 0:
-                    //retorno = posFixa.trataEOu(filaPosFixa, indice);
+                    retorno = posFixa.trataEOu(filaPosFixa, indice);
                     break;
 
                 case 1:
-                    //retorno = posFixa.trataEOu(filaPosFixa, indice);
+                    retorno = posFixa.trataEOu(filaPosFixa, indice);
                     break;
                 case 2:
                     if (filaPosFixa.get(indice).getLexema().contentEquals("!=") || filaPosFixa.get(indice).getLexema().contentEquals("=")) {
-                      //  retorno = posFixa.trataIgualDiferente(filaPosFixa, indice);
+                    retorno = posFixa.trataIgualDiferente(filaPosFixa, indice);
                     } else {
                         
-                       // retorno = posFixa.trataRelacionais(filaPosFixa, indice);
+                    retorno = posFixa.trataRelacionais(filaPosFixa, indice);
                     }
                     break;
                 case 3:
-                    //retorno = posFixa.trataMultDivSomaSub(filaPosFixa, indice);
+                    retorno = posFixa.trataMultDivSomaSub(filaPosFixa, indice);
                     break;
                 case 4:
-                    //retorno = posFixa.trataMultDivSomaSub(filaPosFixa, indice);
+                    retorno = posFixa.trataMultDivSomaSub(filaPosFixa, indice);
                     break;
                 case 5:
                     if (filaPosFixa.get(indice).getLexema().contentEquals("nao")) {
-                      //  retorno = posFixa.trataNaoUnitario(filaPosFixa, indice);
+                    retorno = posFixa.trataNaoUnitario(filaPosFixa, indice);
                     } else {
-                        //retorno = posFixa.trataUnitario(filaPosFixa, indice);
+                    retorno = posFixa.trataUnitario(filaPosFixa, indice);
                     }
                     break;
 
