@@ -1,0 +1,23 @@
+{Teste 1 - OK}
+programa test1;
+
+var a,b,c,d: inteiro;
+
+funcao analisa3: inteiro;
+var l: inteiro;
+inicio
+  leia(c);
+  analisa3 := c + 1; 
+fim;
+
+inicio
+     d := analisa3;
+     a := 5;
+     b := 2;	
+    se b > (c+ a*a)
+    entao escreva(b)
+    senao escreva(c)
+fim.
+
+{fim}   
+
