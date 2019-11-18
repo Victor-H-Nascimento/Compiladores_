@@ -59,34 +59,42 @@ public class Funcoes {
 
     public void ADD() {  //somar  
         //M[s-1]:=M[s-1] + M[s]; s:=s - 1
-        pilha.add((int) pilha.elementAt(pilha.size() - 1) + (int) pilha.elementAt(pilha.size() - 2));
+        int primeiroValor = (int)pilha.lastElement();
         pilha.pop();
+        int segundoValor = (int)pilha.lastElement();
         pilha.pop();
+        pilha.add(primeiroValor + segundoValor);
         s = pilha.size() - 1; //atualiza s
     }
 
     public void SUB() {
         //M[s-1]:=M[s-1] - M[s]; s:=s - 1
-        pilha.add((int) pilha.elementAt(pilha.size() - 1) - (int) pilha.elementAt(pilha.size() - 2));
+         int primeiroValor = (int)pilha.lastElement();
         pilha.pop();
+        int segundoValor = (int)pilha.lastElement();
         pilha.pop();
+        pilha.add(primeiroValor - segundoValor);
         s = pilha.size() - 1; //atualiza s
     }
 
     public void MULT() {
         //M[s-1]:=M[s-1] * M[s]; s:=s - 1
-        pilha.add((int) pilha.elementAt(pilha.size() - 1) * (int) pilha.elementAt(pilha.size() - 2));
+         int primeiroValor = (int)pilha.lastElement();
         pilha.pop();
+        int segundoValor = (int)pilha.lastElement();
         pilha.pop();
+        pilha.add(primeiroValor * segundoValor);
         s = pilha.size() - 1; //atualiza s
     }
 
     public void DIVI() {
         //M[s-1]:=M[s-1] / M[s]; s:=s - 1
 
-        pilha.add((int) pilha.elementAt(pilha.size() - 1) / (int) pilha.elementAt(pilha.size() - 2));
+        int primeiroValor = (int)pilha.lastElement();
         pilha.pop();
+        int segundoValor = (int)pilha.lastElement();
         pilha.pop();
+        pilha.add(primeiroValor / segundoValor);
         s = pilha.size() - 1; //atualiza s
     }
 
@@ -319,7 +327,7 @@ public class Funcoes {
         for (int k = 0; k <= n - 1; k++) {
 
             if (m + k <= pilha.size() - 1) {
-                int aux = (int) pilha.elementAt(pilha.size() - 1);
+                int aux = (int) pilha.lastElement();
                 pilha.remove(m + k);
                 pilha.insertElementAt(aux, m + k);
                 pilha.pop();
@@ -339,20 +347,20 @@ public class Funcoes {
 
     public void RETURN() {
         // i:=M[s]; s:=s - 1 
-
-        i = (int) pilha.elementAt(pilha.size() - 1);
+        i = (int) pilha.lastElement();
         pilha.pop();
         s = pilha.size() - 1;
     }
 
     public void RETURNF(int m, int n) {
         // i:=M[s]; s:=s - 1 // Dalloc (m,n) // 
-        int aux = (int) pilha.elementAt(pilha.size() - 1);
+        int aux = (int) pilha.lastElement();
         pilha.pop();
         DALLOC(m, n);
+        RETURN();
         s++;//posicao do Topo
         pilha.add(aux);
-        RETURN();
+       
     }
 
     public void RETURNF() {
