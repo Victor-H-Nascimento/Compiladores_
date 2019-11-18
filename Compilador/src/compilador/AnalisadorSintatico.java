@@ -132,7 +132,7 @@ public class AnalisadorSintatico {
                 pilhaTabelaDeSimbolos.pop();
             } else {//tira variaveis
                 pilhaTabelaDeSimbolos.pop();
-              //  decrementaPosicaoMemoria();
+                decrementaPosicaoMemoria();
                 qtdVariaveisDalloc++;
             }
 
@@ -688,7 +688,7 @@ public class AnalisadorSintatico {
         }
 
         gerador.geraCALL(pesquisaLabelProcedimentoFuncao(token.getLexema()));
-
+        gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));// antes, verificar se tipo de retorno eh igual ao tipo da variavel
         token = analisadorLexico.lexico();
     }
 
