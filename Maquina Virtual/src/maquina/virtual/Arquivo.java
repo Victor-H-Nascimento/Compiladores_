@@ -73,7 +73,12 @@ public class Arquivo {
                             struct.setIndice(i);
                             fila.add(struct);
                         }
-
+                        
+                        else{
+                        jaExiste = false;
+                        }
+                        
+                    break;
                     }
                 }
 

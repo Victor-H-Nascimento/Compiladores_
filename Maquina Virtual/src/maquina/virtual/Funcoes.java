@@ -73,7 +73,7 @@ public class Funcoes {
         pilha.pop();
         int segundoValor = (int)pilha.lastElement();
         pilha.pop();
-        pilha.add(primeiroValor - segundoValor);
+        pilha.add(segundoValor - primeiroValor);
         s = pilha.size() - 1; //atualiza s
     }
 
@@ -364,7 +364,11 @@ public class Funcoes {
     }
 
     public void RETURNF() {
+        int aux = (int) pilha.lastElement();
+        pilha.pop();
         RETURN();
+        s++;//posicao do Topo
+        pilha.add(aux);
     }
 
 }
