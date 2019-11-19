@@ -32,9 +32,9 @@ public class AnalisadorSintatico {
     private int qtdVariaveisDalloc = 0;
     private int flag = 0;
     private int labelFlag;
-    private boolean primeiroRetorno = false;
     private boolean chamadaFuncao = false;
     private boolean isFuncao = false;
+    private int qtdInicio = 0;
 
     AnalisadorSintatico(AnalisadorLexico analisadorLexico) throws IOException {
         this.analisadorLexico = analisadorLexico;
@@ -110,6 +110,7 @@ public class AnalisadorSintatico {
     }
 
     private void analisaBloco() throws IOException {
+       
         token = analisadorLexico.lexico();
         int posicaoIncialAlloc = getPosicaoMemoria();
 
@@ -248,6 +249,10 @@ public class AnalisadorSintatico {
 
     private void analisaComandos() throws IOException {
         if (token.getSimbolo().equalsIgnoreCase("sInicio") && !errosSintaticos) {
+            if (flag == 1 && qtdInicio == 0) {
+                flag = 0;
+                gerador.geraNULL(labelFlag);
+            }
             token = analisadorLexico.lexico();
             analisaComandoSimples();
 
@@ -429,7 +434,6 @@ public class AnalisadorSintatico {
             labelFlag = rotuloLabel;
             incrementaRotuloLabel();
             flag = 1;
-            primeiroRetorno = true;
         }
         while (token.getSimbolo().equalsIgnoreCase("sProcedimento") || token.getSimbolo().equalsIgnoreCase("sFuncao")) {
             if (token.getSimbolo().equalsIgnoreCase("sProcedimento")) {
@@ -445,11 +449,6 @@ public class AnalisadorSintatico {
         }
         if (flag == 1) {
 
-            if (primeiroRetorno) {
-                primeiroRetorno = false;
-            } else {
-                //gerador.geraRETURN();
-            }
         }
     }
 
@@ -467,7 +466,9 @@ public class AnalisadorSintatico {
                 if (token.getSimbolo().equalsIgnoreCase("sPontoVirgula") && !errosSintaticos) {
                     gerador.geraNULL(rotuloLabel);
                     incrementaRotuloLabel();
+                    qtdInicio++;
                     analisaBloco();
+                    qtdInicio--;
                     gerador.geraRETURN();
                 } else {
                     mostraErros(";");
@@ -505,7 +506,9 @@ public class AnalisadorSintatico {
                             gerador.geraNULL(rotuloLabel);
                             incrementaRotuloLabel();
                             isFuncao = true;
+                            qtdInicio++;
                             analisaBloco();
+                            qtdInicio--;
                         }
                     } else {
                         mostraErros("inteiro ou booleano");
@@ -669,10 +672,7 @@ public class AnalisadorSintatico {
 
         if (!erroNaAtribuicao) {// entra aqui se nao houve nenhum errado na declaracao do procedimento
             erroNaAtribuicao = true;
-            if (flag == 1) {
-                flag = 0;
-                gerador.geraNULL(labelFlag);
-            }
+            
             gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
         } else {
             erroSemanticoLadoEsquerdoChamadaProcedimento();
@@ -681,11 +681,6 @@ public class AnalisadorSintatico {
     }
 
     private void analisaChamadaFuncao() throws IOException {
-
-        if (flag == 1) {
-            flag = 0;
-            gerador.geraNULL(labelFlag);
-        }
 
         gerador.geraCALL(pesquisaLabelProcedimentoFuncao(token.getLexema()));
         gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));// antes, verificar se tipo de retorno eh igual ao tipo da variavel
