@@ -22,7 +22,8 @@ public class AnalisadorSintatico {
     private SimbolosToken simbolos = new SimbolosToken();
     private String fraseContendoErro = "";
     private boolean errosSintaticos = false;
-    private boolean erroNaAtribuicao = true;
+    private boolean erroNaAtribuicao = true; // RETIRAR?
+    private String analiseAtribuicao = "erro";
     private Stack<Token> pilhaOperadores = new Stack();
     private ArrayList<ElementosPosFixa> filaPosFixa = new ArrayList();
     private int rotuloLabel = 1;
@@ -110,7 +111,7 @@ public class AnalisadorSintatico {
     }
 
     private void analisaBloco() throws IOException {
-       
+
         token = analisadorLexico.lexico();
         int posicaoIncialAlloc = getPosicaoMemoria();
 
@@ -147,13 +148,11 @@ public class AnalisadorSintatico {
             isFuncao = false;
             if (qtdVariaveisDalloc > 0) {
                 gerador.geraRETURNF(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
-                 qtdVariaveisDalloc = 0;
-            }
-            
-            else{
+                qtdVariaveisDalloc = 0;
+            } else {
                 gerador.geraRETURNF();
             }
-            
+
         } else {
             if (qtdVariaveisDalloc > 0) {
                 gerador.geraDALLOC(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
@@ -338,7 +337,8 @@ public class AnalisadorSintatico {
                         gerador.geraLDV(retornaPosicaoMemoria(token.getLexema()));
                         gerador.geraPRN();
                     } else {//se funcao
-
+                        gerador.geraCALL(pesquisaLabelProcedimentoFuncao(token.getLexema()));
+                        gerador.geraPRN();
                     }
 
                     token = analisadorLexico.lexico();
@@ -626,33 +626,52 @@ public class AnalisadorSintatico {
 
         //verificar se tokenAuxiliar é uma variavel e se já está na tabela de simbolos
         for (int i = pilhaTabelaDeSimbolos.size(); i > 0; i--) {
-            if (pilhaTabelaDeSimbolos.elementAt(i - 1).getLexema().contentEquals(tokenAuxiliar.getLexema()) && (pilhaTabelaDeSimbolos.elementAt(i - 1) instanceof TabelaDeSimbolosVariaveis || pilhaTabelaDeSimbolos.elementAt(i - 1) instanceof TabelaDeSimbolosFuncoes)) {
-                erroNaAtribuicao = false;
+            if (pilhaTabelaDeSimbolos.elementAt(i - 1).getLexema().contentEquals(tokenAuxiliar.getLexema())) {
+
+                if (pilhaTabelaDeSimbolos.elementAt(i - 1) instanceof TabelaDeSimbolosVariaveis) {
+                    analiseAtribuicao = "variavel";
+                } else if (pilhaTabelaDeSimbolos.elementAt(i - 1) instanceof TabelaDeSimbolosFuncoes) {
+                    analiseAtribuicao = "funcao";
+                }
+
+                //erroNaAtribuicao = false;
                 break;
             }
         }
 
-        if (!erroNaAtribuicao) {
+        if (analiseAtribuicao.contentEquals("variavel")) {
             token = analisadorLexico.lexico();
             analisaExpressao();// ver condicao do retorno
             fimInFixa();
-            if (!chamadaFuncao) {// se nao era funcao
+            if (!chamadaFuncao) {// se nao for uma chamada de funcao
                 String retorno = verificaPosFixa();
-
-                if (pesquisaDeclaracaoVariavel(tokenAuxiliar.getLexema())) { // se for variavel gerar STR
-                    gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));
-                } else {
-                    //   gerador.geraRETURNF(0, 0);
-                }
-
                 if (!retorno.contentEquals(pesquisaTipoVariavel(tokenAuxiliar.getLexema()))) {// erro se o tipo da variavel/funcao do lado esquerdo for diferente do tipo da expressao
                     erroTipoExpressao();
+                } else {
+                    gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));
                 }
-            } else {// se acabou de chamar uma funcao
+            } else {
                 chamadaFuncao = false;
             }
+            analiseAtribuicao = "erro";
 
-            erroNaAtribuicao = true;
+        } else if (analiseAtribuicao.contentEquals("funcao")) {
+            if (isFuncao) {
+                token = analisadorLexico.lexico();
+                analisaExpressao();// ver condicao do retorno
+                fimInFixa();
+                if (!chamadaFuncao) {
+                    String retorno = verificaPosFixa();
+                    if (!retorno.contentEquals(pesquisaTipoVariavel(tokenAuxiliar.getLexema()))) {// erro se o tipo da variavel/funcao do lado esquerdo for diferente do tipo da expressao
+                        erroTipoExpressao();
+                    }
+                } else {
+                    chamadaFuncao = false;
+                }
+                analiseAtribuicao = "erro";
+            } else {
+                erroSemanticoRetornoDeFuncaoLugarIndevido();
+            }
 
         } else {
             erroSemanticoLadoEsquerdoAtribuicao();
@@ -672,7 +691,7 @@ public class AnalisadorSintatico {
 
         if (!erroNaAtribuicao) {// entra aqui se nao houve nenhum errado na declaracao do procedimento
             erroNaAtribuicao = true;
-            
+
             gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
         } else {
             erroSemanticoLadoEsquerdoChamadaProcedimento();
@@ -971,7 +990,7 @@ public class AnalisadorSintatico {
             FuncoesPosFixa posFixa = new FuncoesPosFixa();
 
             int prioridade = getPrioridade(filaPosFixa.get(indice).getLexema());
-            
+
             switch (prioridade) {
 
                 case 0:
@@ -983,10 +1002,10 @@ public class AnalisadorSintatico {
                     break;
                 case 2:
                     if (filaPosFixa.get(indice).getLexema().contentEquals("!=") || filaPosFixa.get(indice).getLexema().contentEquals("=")) {
-                    retorno = posFixa.trataIgualDiferente(filaPosFixa, indice);
+                        retorno = posFixa.trataIgualDiferente(filaPosFixa, indice);
                     } else {
-                        
-                    retorno = posFixa.trataRelacionais(filaPosFixa, indice);
+
+                        retorno = posFixa.trataRelacionais(filaPosFixa, indice);
                     }
                     break;
                 case 3:
@@ -997,39 +1016,39 @@ public class AnalisadorSintatico {
                     break;
                 case 5:
                     if (filaPosFixa.get(indice).getLexema().contentEquals("nao")) {
-                    retorno = posFixa.trataNaoUnitario(filaPosFixa, indice);
+                        retorno = posFixa.trataNaoUnitario(filaPosFixa, indice);
                     } else {
-                    retorno = posFixa.trataUnitario(filaPosFixa, indice);
+                        retorno = posFixa.trataUnitario(filaPosFixa, indice);
                     }
                     break;
 
             }
-            if (retorno != 1){  //erro
-            errosSintaticos = true;
-            switch(retorno){
-                case -1:
-                    fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para um operador unitario espera-se um inteiro");
-                    break;
-                case -2:
-                    fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para o comando 'nao' espera-se um booleano");
-                    break;
-                case -3:
-                    fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para um operador (+,-,div e mult) espera-se dois inteiros");
-                    break;
-                case -4:
-                    fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para operadores relacionais espera-se dois inteiros");
-                    break;
-                case -5:
-                    fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para 'e' e 'ou' espera-se dois booleanos");
-                    break;
-                case -6:
-                    fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para '=' ou '!=' espera-se elementos do mesmo tipo (dois inteiros ou dois booleanos)");
-                    break;
+            if (retorno != 1) {  //erro
+                errosSintaticos = true;
+                switch (retorno) {
+                    case -1:
+                        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para um operador unitario espera-se um inteiro");
+                        break;
+                    case -2:
+                        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para o comando 'nao' espera-se um booleano");
+                        break;
+                    case -3:
+                        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para um operador (+,-,div e mult) espera-se dois inteiros");
+                        break;
+                    case -4:
+                        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para operadores relacionais espera-se dois inteiros");
+                        break;
+                    case -5:
+                        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para 'e' e 'ou' espera-se dois booleanos");
+                        break;
+                    case -6:
+                        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Para '=' ou '!=' espera-se elementos do mesmo tipo (dois inteiros ou dois booleanos)");
+                        break;
+                }
             }
-        }
 
         }
-        
+
         Operando resposta = (Operando) filaPosFixa.get(0);
 
         filaPosFixa.clear();;// reseta fila da pos fixa apos fim da expressao
@@ -1147,5 +1166,18 @@ public class AnalisadorSintatico {
             }
         }
         return -1;
+    }
+
+    private void erroSemanticoRetornoDeFuncaoLugarIndevido() {
+        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Retorno de função deve estar dentro de uma função.");
+        errosSintaticos = true;
+    }
+
+    private boolean isRetornoFuncao() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void criaReturnfDalloc() {
+
     }
 }
