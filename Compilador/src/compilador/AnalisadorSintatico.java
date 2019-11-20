@@ -22,7 +22,6 @@ public class AnalisadorSintatico {
     private SimbolosToken simbolos = new SimbolosToken();
     private String fraseContendoErro = "";
     private boolean errosSintaticos = false;
-    private boolean erroNaAtribuicao = true; // RETIRAR?
     private String analiseAtribuicao = "erro";
     private Stack<Token> pilhaOperadores = new Stack();
     private ArrayList<ElementosPosFixa> filaPosFixa = new ArrayList();
@@ -36,6 +35,8 @@ public class AnalisadorSintatico {
     private boolean chamadaFuncao = false;
     private boolean isFuncao = false;
     private int qtdInicio = 0;
+    private int qtdReturnsNecessarios = 0;
+    private int qtdReturnsEncontrados = 0;
 
     AnalisadorSintatico(AnalisadorLexico analisadorLexico) throws IOException {
         this.analisadorLexico = analisadorLexico;
@@ -146,11 +147,18 @@ public class AnalisadorSintatico {
 
         if (isFuncao) {
             isFuncao = false;
-            if (qtdVariaveisDalloc > 0) {
-                gerador.geraRETURNF(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
-                qtdVariaveisDalloc = 0;
-            } else {
-                gerador.geraRETURNF();
+
+            if (qtdReturnsNecessarios + 1 == qtdReturnsEncontrados) {
+                if (qtdVariaveisDalloc > 0) {
+                    gerador.geraRETURNF(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
+                    qtdVariaveisDalloc = 0;
+                } else {
+                    gerador.geraRETURNF();
+                }
+            }
+            
+            else{
+             erroQuantidadeReturnfs();
             }
 
         } else {
@@ -403,6 +411,7 @@ public class AnalisadorSintatico {
 
         if (retorno.contentEquals(simbolos.getBooleano())) {
             if (token.getSimbolo().equalsIgnoreCase("sEntao") && !errosSintaticos) {
+                qtdReturnsNecessarios++;
                 gerador.geraJMPF(labelSe);// gera jmpf
                 token = analisadorLexico.lexico();
                 analisaComandoSimples();
@@ -447,9 +456,7 @@ public class AnalisadorSintatico {
                 mostraErros(";");
             }
         }
-        if (flag == 1) {
 
-        }
     }
 
     private void analisaDeclaracaoProcedimento() throws IOException {
@@ -458,7 +465,7 @@ public class AnalisadorSintatico {
         if (token.getSimbolo().equalsIgnoreCase("sIdentificador") && !errosSintaticos) {
             //semantico
 
-            if (pesquisaDeclaracaoProcedimento(token.getLexema())) {
+            if (!pesquisaDeclaracaoProcedimento(token.getLexema())) {
                 TabelaDeSimbolosProgramaProcedimentos procedimentoTabelaSimbolos = new TabelaDeSimbolosProgramaProcedimentos(token.getLexema(), rotuloLabel);
                 pilhaTabelaDeSimbolos.push(procedimentoTabelaSimbolos);
 
@@ -489,7 +496,7 @@ public class AnalisadorSintatico {
         if (token.getSimbolo().equalsIgnoreCase("sIdentificador") && !errosSintaticos) {
             //semantico
 
-            if (pesquisaDeclaracaoFuncao(token.getLexema())) {
+            if (!pesquisaDeclaracaoFuncao(token.getLexema())) {
                 TabelaDeSimbolosFuncoes funcaoTabelaSimbolos = new TabelaDeSimbolosFuncoes(token.getLexema(), rotuloLabel);
                 pilhaTabelaDeSimbolos.push(funcaoTabelaSimbolos);
 
@@ -633,8 +640,6 @@ public class AnalisadorSintatico {
                 } else if (pilhaTabelaDeSimbolos.elementAt(i - 1) instanceof TabelaDeSimbolosFuncoes) {
                     analiseAtribuicao = "funcao";
                 }
-
-                //erroNaAtribuicao = false;
                 break;
             }
         }
@@ -660,6 +665,7 @@ public class AnalisadorSintatico {
                 token = analisadorLexico.lexico();
                 analisaExpressao();// ver condicao do retorno
                 fimInFixa();
+                qtdReturnsEncontrados++;
                 if (!chamadaFuncao) {
                     String retorno = verificaPosFixa();
                     if (!retorno.contentEquals(pesquisaTipoVariavel(tokenAuxiliar.getLexema()))) {// erro se o tipo da variavel/funcao do lado esquerdo for diferente do tipo da expressao
@@ -680,17 +686,8 @@ public class AnalisadorSintatico {
     }
 
     private void analisaChamadaProcedimento() {
-        //verificar se tokenAuxiliar é um procedimento e está guardado na tabela de simbolos
 
-        for (int i = pilhaTabelaDeSimbolos.size(); i > 0; i--) {
-            if (pilhaTabelaDeSimbolos.elementAt(i - 1).getLexema().contentEquals(tokenAuxiliar.getLexema()) && pilhaTabelaDeSimbolos.elementAt(i - 1) instanceof TabelaDeSimbolosProgramaProcedimentos) {
-                erroNaAtribuicao = false;
-                break;
-            }
-        }
-
-        if (!erroNaAtribuicao) {// entra aqui se nao houve nenhum errado na declaracao do procedimento
-            erroNaAtribuicao = true;
+        if (pesquisaDeclaracaoProcedimento(tokenAuxiliar.getLexema())) {// entra aqui se nao houve nenhum errado na declaracao do procedimento
 
             gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
         } else {
@@ -701,9 +698,15 @@ public class AnalisadorSintatico {
 
     private void analisaChamadaFuncao() throws IOException {
 
-        gerador.geraCALL(pesquisaLabelProcedimentoFuncao(token.getLexema()));
-        gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));// antes, verificar se tipo de retorno eh igual ao tipo da variavel
-        token = analisadorLexico.lexico();
+        if (pesquisaDeclaracaoFuncao(token.getLexema())) {// entra aqui se nao houve nenhum errado na declaracao do procedimento
+
+            gerador.geraCALL(pesquisaLabelProcedimentoFuncao(token.getLexema()));
+            gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));// antes, verificar se tipo de retorno eh igual ao tipo da variavel
+            token = analisadorLexico.lexico();
+        } else {
+            erroSemanticoLadoDireitoChamadaFuncao();
+        }
+
     }
 
     private void mostraErros(String erroEncontrado) {
@@ -817,12 +820,12 @@ public class AnalisadorSintatico {
 
             if (item instanceof TabelaDeSimbolosProgramaProcedimentos) {
                 if (item.getLexema().contentEquals(lexema)) {
-                    return false;
+                    return true;
                 }
             }
 
         }
-        return true;
+        return false;
     }
 
     private boolean pesquisaDeclaracaoFuncao(String lexema) {
@@ -830,12 +833,12 @@ public class AnalisadorSintatico {
 
             if (item instanceof TabelaDeSimbolosFuncoes) {
                 if (item.getLexema().contentEquals(lexema)) {
-                    return false;
+                    return true;
                 }
             }
 
         }
-        return true;
+        return false;
     }
 
     private void preencheTipoFuncao(TabelaDeSimbolosFuncoes elemento, Token tokenAux) {
@@ -886,6 +889,11 @@ public class AnalisadorSintatico {
 
     private void erroSemanticoLadoEsquerdoChamadaProcedimento() {
         fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Tipo incompatível. Espera-se procedimento.");
+        errosSintaticos = true;
+    }
+
+    private void erroSemanticoLadoDireitoChamadaFuncao() {
+        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Espera-se funcao do lado direito da atribuicao.");
         errosSintaticos = true;
     }
 
@@ -1173,11 +1181,9 @@ public class AnalisadorSintatico {
         errosSintaticos = true;
     }
 
-    private boolean isRetornoFuncao() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void erroQuantidadeReturnfs() {
+        fraseContendoErro = fraseContendoErro.concat("Erro Semantico: " + "Quantidade de retorno de funcao incompativel com a quantidade necessária. Foram encontradas " + qtdReturnsEncontrados + " retornos. Eram esperados " + (qtdReturnsNecessarios + 1) + ".");
+        errosSintaticos = true;
     }
 
-    private void criaReturnfDalloc() {
-
-    }
 }
