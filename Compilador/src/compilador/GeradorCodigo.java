@@ -15,137 +15,146 @@ import java.io.PrintWriter;
  */
 public class GeradorCodigo {
 
-    PrintWriter gravarArq;
-    FileWriter arq;
+    
+    FileWriter arq = new FileWriter("saidaCompilador.txt");
+    PrintWriter gravarArq = new PrintWriter(arq);
+    private String texto = "";
 
     public GeradorCodigo() throws IOException {
-        this.arq = new FileWriter("saidaCompilador.txt");
-        this.gravarArq = new PrintWriter(this.arq);
+       // FileWriter arq = new FileWriter("saidaCompilador.txt");
+        //gravarArq = new PrintWriter(arq);
     }
 
     public void geraLDC(int valor) {
-        EscreveAssembly("LDC ".concat(Integer.toString(valor)));
+        adicionaFila("LDC ".concat(Integer.toString(valor)));
     }
 
     public void geraLDV(int valor) {
-        EscreveAssembly("LDV ".concat(Integer.toString(valor)));
+        adicionaFila("LDV ".concat(Integer.toString(valor)));
     }
 
     public void geraADD() {
-        EscreveAssembly("ADD");
+        adicionaFila("ADD");
     }
 
     public void geraSUB() {
-        EscreveAssembly("SUB");
+        adicionaFila("SUB");
     }
 
     public void geraMULT() {
-        EscreveAssembly("MULT");
+        adicionaFila("MULT");
     }
 
     public void geraDIVI() {
-        EscreveAssembly("DIVI");
+        adicionaFila("DIVI");
     }
 
     public void geraINV() {
-        EscreveAssembly("INV");
+        adicionaFila("INV");
     }
 
     public void geraAND() {
-        EscreveAssembly("AND");
+        adicionaFila("AND");
     }
 
     public void geraOR() {
-        EscreveAssembly("OR");
+        adicionaFila("OR");
     }
 
     public void geraNEG() {
-        EscreveAssembly("NEG");
+        adicionaFila("NEG");
     }
 
     public void geraCME() {
-        EscreveAssembly("CME");
+        adicionaFila("CME");
     }
 
     public void geraCMA() {
-        EscreveAssembly("CMA");
+        adicionaFila("CMA");
     }
 
     public void geraCEQ() {
-        EscreveAssembly("CEQ");
+        adicionaFila("CEQ");
     }
 
     public void geraCDIF() {
-        EscreveAssembly("CDIF");
+        adicionaFila("CDIF");
     }
 
     public void geraCMEQ() {
-        EscreveAssembly("CMEQ");
+        adicionaFila("CMEQ");
     }
 
     public void geraCMAQ() {
-        EscreveAssembly("CMAQ");
+        adicionaFila("CMAQ");
     }
 
     public void geraSTART() {
-        EscreveAssembly("START");
+        adicionaFila("START");
     }
 
     public void geraHLT() {
-        EscreveAssembly("HLT");
+        adicionaFila("HLT");
+        EscreveAssembly();
     }
 
     public void geraSTR(int valor) {
-        EscreveAssembly("STR ".concat(Integer.toString(valor)));
+        adicionaFila("STR ".concat(Integer.toString(valor)));
     }
 
     public void geraJMP(int valor) {
-        EscreveAssembly("JMP L".concat(Integer.toString(valor)));
+        adicionaFila("JMP L".concat(Integer.toString(valor)));
     }
 
     public void geraJMPF(int valor) {
-        EscreveAssembly("JMPF L".concat(Integer.toString(valor)));
+        adicionaFila("JMPF L".concat(Integer.toString(valor)));
     }
 
     public void geraNULL(int valor) {
-        EscreveAssembly("L".concat(Integer.toString(valor)).concat(" NULL"));
+        adicionaFila("L".concat(Integer.toString(valor)).concat(" NULL"));
     }
 
     public void geraRD() {
-        EscreveAssembly("RD");
+        adicionaFila("RD");
     }
 
     public void geraPRN() {
-        EscreveAssembly("PRN");
+        adicionaFila("PRN");
     }
 
     public void geraALLOC(int indiceInicial, int quantidade) {
-        EscreveAssembly("ALLOC ".concat(Integer.toString(indiceInicial)).concat(",").concat(Integer.toString(quantidade)));
+        adicionaFila("ALLOC ".concat(Integer.toString(indiceInicial)).concat(",").concat(Integer.toString(quantidade)));
     }
 
     public void geraDALLOC(int indiceInicial, int quantidade) {
-         EscreveAssembly("DALLOC ".concat(Integer.toString(indiceInicial)).concat(",").concat(Integer.toString(quantidade)));
+         adicionaFila("DALLOC ".concat(Integer.toString(indiceInicial)).concat(",").concat(Integer.toString(quantidade)));
     }
 
     public void geraCALL(int valor) {
-        EscreveAssembly("CALL L".concat(Integer.toString(valor)));
+        adicionaFila("CALL L".concat(Integer.toString(valor)));
     }
 
     public void geraRETURN() {
-        EscreveAssembly("RETURN");
+        adicionaFila("RETURN");
     }
     
     public void geraRETURNF(int indiceInicial, int quantidade) {
-         EscreveAssembly("RETURNF ".concat(Integer.toString(indiceInicial)).concat(",").concat(Integer.toString(quantidade)));
+         adicionaFila("RETURNF ".concat(Integer.toString(indiceInicial)).concat(",").concat(Integer.toString(quantidade)));
     }
     
     public void geraRETURNF() {
-         EscreveAssembly("RETURNF");
+         adicionaFila("RETURNF");
     }
 
-    public void EscreveAssembly(String Texto) {
-        gravarArq.println(Texto.concat("\n"));
-        System.out.println(Texto);
+    public void adicionaFila(String linha) {
+        texto = texto.concat(linha).concat("\n");
+        System.out.println(linha);
+    }
+    
+    
+    public void EscreveAssembly() {
+        //gravarArq.println(texto);
+        gravarArq.write(texto);
     }
 
 }

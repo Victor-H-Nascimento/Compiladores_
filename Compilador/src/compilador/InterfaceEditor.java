@@ -160,7 +160,7 @@ public class InterfaceEditor extends javax.swing.JFrame {
         }
         PrintWriter gravarArq = new PrintWriter(arq);
 
-        gravarArq.println(jTextAreaDeCodigo.getText());
+        gravarArq.write(jTextAreaDeCodigo.getText());
 
         try {
             arq.close();
