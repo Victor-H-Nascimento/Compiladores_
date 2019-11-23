@@ -23,10 +23,7 @@ public class InterfaceInicial extends javax.swing.JFrame {
      */
     public InterfaceInicial() {
         initComponents();
-        textFIeldEntrada.setEnabled(false);
-        textFieldSaida.setEnabled(false);
-        botaoExecutar.setEnabled(false);
-        botaoContinuar.setEnabled(false);
+
     }
 
     /**
@@ -39,13 +36,6 @@ public class InterfaceInicial extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        textFIeldEntrada = new javax.swing.JTextField();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        textFieldSaida = new javax.swing.JTextArea();
-        botaoExecutar = new javax.swing.JButton();
-        botaoContinuar = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuFileAbrir = new javax.swing.JMenuItem();
@@ -53,68 +43,15 @@ public class InterfaceInicial extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Entrada:");
-
-        jLabel2.setText("Saida:");
-
-        textFIeldEntrada.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFIeldEntradaActionPerformed(evt);
-            }
-        });
-
-        textFieldSaida.setColumns(20);
-        textFieldSaida.setRows(5);
-        jScrollPane5.setViewportView(textFieldSaida);
-
-        botaoExecutar.setText("Executar");
-        botaoExecutar.setMaximumSize(new java.awt.Dimension(100, 29));
-        botaoExecutar.setMinimumSize(new java.awt.Dimension(100, 29));
-        botaoExecutar.setPreferredSize(new java.awt.Dimension(100, 29));
-
-        botaoContinuar.setText("Continuar");
-        botaoContinuar.setMaximumSize(new java.awt.Dimension(100, 29));
-        botaoContinuar.setMinimumSize(new java.awt.Dimension(100, 29));
-        botaoContinuar.setPreferredSize(new java.awt.Dimension(100, 29));
-        botaoContinuar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoContinuarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textFIeldEntrada)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE))
-                .addGap(69, 69, 69)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(botaoExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18))
+            .addGap(0, 634, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(357, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(textFIeldEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botaoExecutar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botaoContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+            .addGap(0, 455, Short.MAX_VALUE)
         );
 
         menuFile.setText("File");
@@ -156,14 +93,6 @@ public class InterfaceInicial extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void textFIeldEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFIeldEntradaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFIeldEntradaActionPerformed
-
-    private void botaoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContinuarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoContinuarActionPerformed
 
     private void menuFileAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileAbrirActionPerformed
         // TODO add your handling code here:
@@ -237,17 +166,10 @@ public class InterfaceInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoContinuar;
-    private javax.swing.JButton botaoExecutar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenuItem menuFileAbrir;
     private javax.swing.JMenuItem menuFileExportar;
-    private javax.swing.JTextField textFIeldEntrada;
-    private javax.swing.JTextArea textFieldSaida;
     // End of variables declaration//GEN-END:variables
 }

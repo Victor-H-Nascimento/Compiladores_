@@ -28,7 +28,6 @@ public class Interface extends javax.swing.JFrame {
 
     public Interface(MaquinaVirtual mv) {
         initComponents();
-        inicializaStatusComponentes();
         this.mv = mv;
     }
 
@@ -50,11 +49,6 @@ public class Interface extends javax.swing.JFrame {
         pilhaDados = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
         pilhaJump = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        textFieldSaida = new javax.swing.JTextArea();
-        botaoExecutar = new javax.swing.JButton();
-        botaoContinuar = new javax.swing.JButton();
         passoApasso = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
@@ -149,26 +143,6 @@ public class Interface extends javax.swing.JFrame {
             pilhaJump.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jLabel2.setText("Saida:");
-
-        textFieldSaida.setColumns(20);
-        textFieldSaida.setRows(5);
-        jScrollPane5.setViewportView(textFieldSaida);
-
-        botaoExecutar.setText("Executar");
-        botaoExecutar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                botaoExecutarMouseClicked(evt);
-            }
-        });
-
-        botaoContinuar.setText("Continuar");
-        botaoContinuar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoContinuarActionPerformed(evt);
-            }
-        });
-
         passoApasso.setText("Passo a passo");
         passoApasso.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -182,26 +156,15 @@ public class Interface extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(25, 25, 25)
-                        .addComponent(jScrollPane5))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botaoContinuar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(botaoExecutar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(passoApasso)
-                        .addGap(29, 29, 29))))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passoApasso, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,17 +174,9 @@ public class Interface extends javax.swing.JFrame {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(botaoExecutar)
-                            .addComponent(passoApasso))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(botaoContinuar))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(28, 28, 28))
+                .addGap(18, 18, 18)
+                .addComponent(passoApasso, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         menuFile.setText("File");
@@ -254,7 +209,7 @@ public class Interface extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -265,27 +220,16 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuFileExportarActionPerformed
 
-    private void botaoContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoContinuarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoContinuarActionPerformed
-
     private void menuFileAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileAbrirActionPerformed
 
     }//GEN-LAST:event_menuFileAbrirActionPerformed
-
-    private void botaoExecutarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoExecutarMouseClicked
-        // TODO add your handling code here:
-        boolean breakPoint = false;
-        breakPoint = (boolean) tabelaExec.getModel().getValueAt(indiceLinha, 0);
-        String comando;
-        preencherPilha();
-    }//GEN-LAST:event_botaoExecutarMouseClicked
 
 
     private void passoApassoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passoApassoMouseClicked
         // TODO add your handling code here:
         //descobrir em qual linha esta
-
+        tabelaExec.clearSelection();
+        indiceLinha=mv.funcoes.getI();
         tabelaExec.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -297,11 +241,17 @@ public class Interface extends javax.swing.JFrame {
 
         });
 
-        //tabelaExec.setBackground(Color.red);
+        tabelaExec.addRowSelectionInterval(indiceLinha,indiceLinha);
+        tabelaExec.setBackground(Color.white);
+        tabelaExec.setForeground(Color.blue);
+        //indiceLinha=mv.funcoes.getI();
         String comando = mv.executarFuncoes();
         System.out.println("indice: " + indiceLinha);
         preencherPilha();
-        indiceLinha++;
+        if("HLT".equals(comando)){
+            indiceLinha = 0;
+        }
+        
 
 
     }//GEN-LAST:event_passoApassoMouseClicked
@@ -379,9 +329,6 @@ public class Interface extends javax.swing.JFrame {
 
     }
 
-    public void inicializaStatusComponentes() {
-        //botaoExecutar.setEnabled(false);
-    }
 
     public void preencherPilha() {
 
@@ -441,18 +388,23 @@ public class Interface extends javax.swing.JFrame {
         int entrada = Integer.parseInt(input);
         return entrada;
     }
+    
+     public static void saidaDados(int saida){
+        String aux = (String) valueOf(saida);
+        int op = 0;
+        op = JOptionPane.showConfirmDialog(null,aux,"saida do print:",JOptionPane.DEFAULT_OPTION);
+    }
+
+    
+   
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoContinuar;
-    private javax.swing.JButton botaoExecutar;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable2;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuFile;
@@ -462,6 +414,10 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTable pilhaDados;
     private javax.swing.JTable pilhaJump;
     private javax.swing.JTable tabelaExec;
-    private javax.swing.JTextArea textFieldSaida;
     // End of variables declaration//GEN-END:variables
+
+
+
+
 }
+

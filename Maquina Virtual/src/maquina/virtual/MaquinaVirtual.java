@@ -45,7 +45,7 @@ public class MaquinaVirtual {
                     case "DALLOC":
                         funcoes.DALLOC(Integer.parseInt(primeiroParametro), Integer.parseInt(segundoParametro));
                         break;
-                          case "RETURNF":
+                    case "RETURNF":
                         funcoes.RETURNF(Integer.parseInt(primeiroParametro), Integer.parseInt(segundoParametro));
                         break;
                     default:
@@ -159,6 +159,7 @@ public class MaquinaVirtual {
                     break;
                 case "PRN":
                     funcoes.PRN();
+                    //valorPrint na interface inicial para printar no textArea
                     break;
                 case "RD":
                     funcoes.RD();
@@ -192,6 +193,7 @@ public class MaquinaVirtual {
         //sempre que executar uma linha, atualizar o i com a funcao setI 
 
         return nomeFuncao;
+        //concatenar numero da linha
     }
 
 }

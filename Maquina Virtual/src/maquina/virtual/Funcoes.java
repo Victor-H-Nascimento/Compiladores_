@@ -29,11 +29,14 @@ public class Funcoes {
 
     //getters e setter
     public int getI() {
-        return i;
+       return i;
     }
 
     public void setI() {
         i++;
+    }
+    public void setI(int a) {
+        i=a;
     }
 
     //metodos abstratos
@@ -253,8 +256,7 @@ public class Funcoes {
     }
 
     public void HLT() {
-        //  “Para a execução da MVD”
-        //como parar?
+        setI(0);//zera o I para a proxima execucao
     }
 
     public void STR(int n) {
@@ -294,9 +296,9 @@ public class Funcoes {
     }
 
     public void PRN() {
-
         int primeiroValor = (int) pilha.elementAt(pilha.size() - 1);
         System.out.println(" PRN s-> " + s + "       " + "|" + primeiroValor + "|");
+        Interface.saidaDados(primeiroValor);
         pilha.pop();//remove o topo
         s = pilha.size() - 1; //atualiza s
     }
