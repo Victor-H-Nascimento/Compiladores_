@@ -5,9 +5,9 @@
  */
 package compilador;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  *
@@ -16,8 +16,6 @@ import java.io.PrintWriter;
 public class GeradorCodigo {
 
     
-    FileWriter arq = new FileWriter("saidaCompilador.txt");
-    PrintWriter gravarArq = new PrintWriter(arq);
     private String texto = "";
 
     public GeradorCodigo() throws IOException {
@@ -93,7 +91,7 @@ public class GeradorCodigo {
         adicionaFila("START");
     }
 
-    public void geraHLT() {
+    public void geraHLT() throws IOException {
         adicionaFila("HLT");
         EscreveAssembly();
     }
@@ -152,9 +150,11 @@ public class GeradorCodigo {
     }
     
     
-    public void EscreveAssembly() {
-        //gravarArq.println(texto);
-        gravarArq.write(texto);
+    public void EscreveAssembly() throws IOException {
+      
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("saidaAssembly.txt"))) {
+            writer.write(texto);
+        }
     }
 
 }

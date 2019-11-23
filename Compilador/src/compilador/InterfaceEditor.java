@@ -1,5 +1,4 @@
 package compilador;
-
 import java.awt.Color;
 import java.io.FileWriter;
 import java.io.IOException;
