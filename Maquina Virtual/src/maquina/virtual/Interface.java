@@ -19,16 +19,24 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ettore
  */
-public class Interface extends javax.swing.JFrame {
+public final class Interface extends javax.swing.JFrame {
 
-    private final MaquinaVirtual mv;
+    private MaquinaVirtual mv = new MaquinaVirtual();
     public int indiceLinha = 0;
     private final Scanner scanner = new Scanner(System.in);
     public int entrada;
 
-    public Interface(MaquinaVirtual mv) {
+    public Interface() {
         initComponents();
-        this.mv = mv;
+        mv.leArquivo();
+        
+         for (int i = 0; i < mv.funcoes.fila.size(); i++) {
+                preencherTabela(mv.funcoes.fila.get(i).toString(), i + 1);
+            }
+
+         mv.filaJMP.forEach((itemLista) -> {
+             preencherJumps(itemLista.getInstrucao(), itemLista.getLabel(), itemLista.getIndice());
+        });
     }
 
     /**
@@ -395,7 +403,35 @@ public class Interface extends javax.swing.JFrame {
         op = JOptionPane.showConfirmDialog(null,aux,"saida do print:",JOptionPane.DEFAULT_OPTION);
     }
 
-    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new Interface().setVisible(true);
+        });
+    }
    
 
 
