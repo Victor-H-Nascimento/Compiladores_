@@ -152,7 +152,7 @@ public class GeradorCodigo {
     
     public void EscreveAssembly() throws IOException {
       
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("../Maquina Virtual/src/maquina/virtual/saidaAssembly.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/maquina/virtual/saidaAssembly.txt"))) {
             writer.write(texto);
         }
     }

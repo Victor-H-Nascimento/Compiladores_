@@ -1,1 +1,20 @@
-programa;
+{Teste 1 - OK}
+programa test1;
+
+var a,b: inteiro;
+
+funcao analisa3: inteiro;
+
+inicio
+ 
+analisa3 := 100;
+
+
+
+fim;
+
+inicio
+	b := analisa3;
+fim.
+
+{fim}   

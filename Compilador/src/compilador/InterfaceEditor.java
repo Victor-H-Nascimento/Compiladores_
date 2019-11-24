@@ -1,4 +1,6 @@
 package compilador;
+
+import maquina.virtual.Interface;
 import java.awt.Color;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
@@ -174,11 +177,18 @@ public class InterfaceEditor extends javax.swing.JFrame {
             if (sintatico.getFraseContendoErro().contentEquals("")) {
                 jTextAreaDeErros.setForeground(Color.BLUE);
                 jTextAreaDeErros.setText("Construido com sucesso!");
+
+                /* Chamar a maquina virtual aqui*/
+                Interface interfaces = new Interface();
+                interfaces.setResizable(false);
+                interfaces.setLocationRelativeTo(this);
+                interfaces.setVisible(true);
+
             } else {
                 jTextAreaDeErros.setForeground(Color.RED);
                 jTextAreaDeErros.setText(sintatico.getFraseContendoErro());
 
-               /* Color corLinhaErro = new Color(255, 0, 0); // Color white
+                /* Color corLinhaErro = new Color(255, 0, 0); // Color white
                 // int pos2 = textArea.getText().indexOf(turnToString2);
 
                 try {
@@ -204,7 +214,6 @@ public class InterfaceEditor extends javax.swing.JFrame {
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Invalid option");
                 }*/
-
             }
 
         } catch (IOException ex) {
@@ -222,34 +231,32 @@ public class InterfaceEditor extends javax.swing.JFrame {
         int fimLinha = 0;
 
         if (!jTextAreaDeCodigo.getText().isEmpty()) {
-        inicioLinha = posicaoCursor;
-        fimLinha = posicaoCursor;
-        
-        while (arrayCodigo[inicioLinha] != '\n' && inicioLinha > 0)//procura o /n inicial
-        {
-            inicioLinha--;
+            inicioLinha = posicaoCursor;
+            fimLinha = posicaoCursor;
+
+            while (arrayCodigo[inicioLinha] != '\n' && inicioLinha > 0)//procura o /n inicial
+            {
+                inicioLinha--;
+            }
+
+            while (arrayCodigo[fimLinha] != '\n')//procura o /n final
+            {
+                fimLinha++;
+            }
+
+            for (int i = inicioLinha; i < fimLinha; i++) {// concatena linha
+                d = d + arrayCodigo[i];
+            }
+
+            try {//coloca a cor entre o intervalo
+                jTextAreaDeCodigo.getHighlighter().removeAllHighlights();
+                jTextAreaDeCodigo.getHighlighter().addHighlight(inicioLinha, fimLinha, new DefaultHighlighter.DefaultHighlightPainter(corLinhaClique));
+            } catch (BadLocationException ex) {
+                Logger.getLogger(InterfaceEditor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jTextAreaDeCodigo.requestFocus();//atualiza a tele(?)
         }
 
-        while (arrayCodigo[fimLinha] != '\n')//procura o /n final
-        {
-            fimLinha++;
-        }
-
-        for (int i = inicioLinha; i < fimLinha; i++) {// concatena linha
-            d = d + arrayCodigo[i];
-        }
-
-        try {//coloca a cor entre o intervalo
-            jTextAreaDeCodigo.getHighlighter().removeAllHighlights();
-            jTextAreaDeCodigo.getHighlighter().addHighlight(inicioLinha, fimLinha, new DefaultHighlighter.DefaultHighlightPainter(corLinhaClique));
-        } catch (BadLocationException ex) {
-            Logger.getLogger(InterfaceEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        jTextAreaDeCodigo.requestFocus();//atualiza a tele(?)
-        }
-        
-
-        
 
     }//GEN-LAST:event_jTextAreaDeCodigoMouseClicked
 
