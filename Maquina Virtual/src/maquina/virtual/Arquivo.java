@@ -1,9 +1,8 @@
 package maquina.virtual;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -17,27 +16,23 @@ public class Arquivo {
     public Arquivo() {//construtor
     }
 
-    public void Read(String Caminho, Funcoes c) {
+    public void Read(Funcoes c) {
 
+        InputStreamReader arq = new InputStreamReader(getClass().getResourceAsStream ("saidaAssembly.txt"));
+        BufferedReader lerArq = new BufferedReader(arq);
+        String linha = "";
         try {
-            FileReader arq = new FileReader(Caminho);
-            BufferedReader lerArq = new BufferedReader(arq);
-            String linha = "";
-            try {
-
-                do {
-                    linha = lerArq.readLine();
-
-                    c.fila.add(linha);
-                } while (!linha.contains("HLT"));
-
-                arq.close();
-
-            } catch (IOException ex) {
-                System.out.println("Erro: Não foi possível ler o arquivo!");
-            }
-        } catch (FileNotFoundException ex) {
-            System.out.println("Erro: Arquivo não encontrado!");
+            
+            do {
+                linha = lerArq.readLine();
+                
+                c.fila.add(linha);
+            } while (!linha.contains("HLT"));
+            
+            arq.close();
+            
+        } catch (IOException ex) {
+            System.out.println("Erro: Não foi possível ler o arquivo!");
         }
     }
 
@@ -88,16 +83,4 @@ public class Arquivo {
 
     }
 
-    /*public static boolean Write(String Caminho,String Texto){
-        try {
-            FileWriter arq = new FileWriter(Caminho);
-            PrintWriter gravarArq = new PrintWriter(arq);
-            gravarArq.println(Texto);
-            gravarArq.close();
-            return true;
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }*/
 }

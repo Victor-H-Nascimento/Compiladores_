@@ -97,15 +97,7 @@ public class InterfaceInicial extends javax.swing.JFrame {
     private void menuFileAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileAbrirActionPerformed
         // TODO add your handling code here:
 
-        JFileChooser fileChooser = new JFileChooser();//e possivel escolher uma pasta para inicializar (/home/desktop....)
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Arquivos txt", "txt"));//alterar para obj
-
-        int retornoArquivo = fileChooser.showOpenDialog(null);  //abre a pasta para escolher o arquivo
-        if (retornoArquivo == JFileChooser.APPROVE_OPTION) { //arquivo selecionado
-            File arquivo = fileChooser.getSelectedFile();
-
-            String path = arquivo.getAbsolutePath();
-            mv.leArquivo(path);
+            mv.leArquivo();
 
             Interface tabelaPreenchida = new Interface(mv);
             tabelaPreenchida.setResizable(false);
@@ -122,8 +114,6 @@ public class InterfaceInicial extends javax.swing.JFrame {
             }
 
             dispose();
-
-        }
 
 
     }//GEN-LAST:event_menuFileAbrirActionPerformed

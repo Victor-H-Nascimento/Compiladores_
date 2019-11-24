@@ -10,8 +10,8 @@ public class MaquinaVirtual {
     private final Arquivo arq = new Arquivo();
 
 
-    public void leArquivo(String arquivoSelecionado) {
-        arq.Read(arquivoSelecionado, funcoes);
+    public void leArquivo() {
+        arq.Read(funcoes);
         arq.EnderecaJMP(funcoes, filaJMP);
     }
 
