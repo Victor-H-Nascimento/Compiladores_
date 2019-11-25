@@ -42,7 +42,7 @@ public class AnalisadorSintatico {
         this.analisadorLexico = analisadorLexico;
         analisaPrograma();
     }
-
+    
     public Token getToken() {
         return token;
     }

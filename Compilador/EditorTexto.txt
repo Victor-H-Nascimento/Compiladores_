@@ -1,5 +1,32 @@
-programa teste;
-var a:inteiro;
+{Teste 1 - OK}
+programa test1;
+
+var a: inteiro;
+
+funcao fatorial: inteiro;
+var b: inteiro;
+
 inicio
-leia(a);
+
+se a <= 1 entao fatorial:= 1
+
+senao 
+inicio 
+	b := a;	
+	a := a-1; 
+	fatorial:= fatorial * b;
+	  
+fim;
+	
+fim;
+
+inicio
+     leia(a);
+     a := fatorial;
+     
 fim.
+
+{fim}
+
+
+

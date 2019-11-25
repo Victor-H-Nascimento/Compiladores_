@@ -36,7 +36,7 @@ public class InterfaceEditor extends javax.swing.JFrame {
 
     public InterfaceEditor() throws IOException {
         this.path = "EditorTexto.txt";
-        interfaces = new Interface();
+        //   interfaces = new Interface();
         initComponents();
     }
 
@@ -181,21 +181,15 @@ public class InterfaceEditor extends javax.swing.JFrame {
 
                 /* Chamar a maquina virtual aqui*/
                 if (!interfaceJaInstanciada) {
-                    interfaces.setResizable(false);
-                    interfaces.setLocationRelativeTo(this);
-                    interfaces.setVisible(true);
                     interfaceJaInstanciada = true;
+                } else {
+                    interfaces.dispose();
                 }
 
-                else{
-                interfaces.dispose();    
                 interfaces = new Interface();
                 interfaces.setResizable(false);
                 interfaces.setLocationRelativeTo(this);
                 interfaces.setVisible(true);
-                }
-                
-                
 
             } else {
                 jTextAreaDeErros.setForeground(Color.RED);

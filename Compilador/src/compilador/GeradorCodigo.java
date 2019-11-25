@@ -18,6 +18,7 @@ public class GeradorCodigo {
     
     private String texto = "";
 
+
     public GeradorCodigo() throws IOException {
        // FileWriter arq = new FileWriter("saidaCompilador.txt");
         //gravarArq = new PrintWriter(arq);

@@ -18,29 +18,31 @@ public class Arquivo {
 
     public void Read(Funcoes c) {
 
-        InputStreamReader arq = new InputStreamReader(getClass().getResourceAsStream ("saidaAssembly.txt"));
+        InputStreamReader arq = new InputStreamReader(getClass().getResourceAsStream("saidaAssembly.txt"));
         BufferedReader lerArq = new BufferedReader(arq);
         String linha = "";
         try {
-            
+
             do {
                 linha = lerArq.readLine();
-                
+
                 c.fila.add(linha);
             } while (!linha.contains("HLT"));
-            
+
             arq.close();
-            
+
+         
         } catch (IOException ex) {
             System.out.println("Erro: Não foi possível ler o arquivo!");
         }
     }
+    
 
     public void EnderecaJMP(Funcoes c, ArrayList<ListaAuxiliar> fila) {
 
         for (int x = 0; x < c.fila.size(); x++) {
             String linhaComInstrucao = c.fila.get(x).toString();
-            
+
 
             /*
                 Transformar os parametros L%d (Ex. L3) em um valor inteiro que aponte para o indice da fila principal
@@ -67,13 +69,11 @@ public class Arquivo {
                             struct.setLabel(label);
                             struct.setIndice(i);
                             fila.add(struct);
+                        } else {
+                            jaExiste = false;
                         }
-                        
-                        else{
-                        jaExiste = false;
-                        }
-                        
-                    break;
+
+                        break;
                     }
                 }
 
