@@ -1,0 +1,5 @@
+programa teste;
+var a:inteiro;
+inicio
+leia(a);
+fim.
