@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
@@ -28,6 +27,8 @@ import javax.swing.text.DefaultHighlighter;
 public class InterfaceEditor extends javax.swing.JFrame {
 
     String path;
+    Interface interfaces;
+    private boolean interfaceJaInstanciada = false;
     /**
      * Creates new form InterfaceEditor
      */
@@ -35,7 +36,7 @@ public class InterfaceEditor extends javax.swing.JFrame {
 
     public InterfaceEditor() throws IOException {
         this.path = "EditorTexto.txt";
-        //  this.arq = new FileWriter(path);
+        interfaces = new Interface();
         initComponents();
     }
 
@@ -179,10 +180,22 @@ public class InterfaceEditor extends javax.swing.JFrame {
                 jTextAreaDeErros.setText("Construido com sucesso!");
 
                 /* Chamar a maquina virtual aqui*/
-                Interface interfaces = new Interface();
+                if (!interfaceJaInstanciada) {
+                    interfaces.setResizable(false);
+                    interfaces.setLocationRelativeTo(this);
+                    interfaces.setVisible(true);
+                    interfaceJaInstanciada = true;
+                }
+
+                else{
+                interfaces.dispose();    
+                interfaces = new Interface();
                 interfaces.setResizable(false);
                 interfaces.setLocationRelativeTo(this);
                 interfaces.setVisible(true);
+                }
+                
+                
 
             } else {
                 jTextAreaDeErros.setForeground(Color.RED);
