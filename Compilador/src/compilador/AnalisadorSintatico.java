@@ -42,7 +42,7 @@ public class AnalisadorSintatico {
         this.analisadorLexico = analisadorLexico;
         analisaPrograma();
     }
-    
+
     public Token getToken() {
         return token;
     }
@@ -148,18 +148,18 @@ public class AnalisadorSintatico {
         if (isFuncao) {
             isFuncao = false;
 
-            // if (qtdReturnsNecessarios + 1 == qtdReturnsEncontrados) {
+             if (qtdReturnsNecessarios + 1 == qtdReturnsEncontrados) {
             if (qtdVariaveisDalloc > 0) {
                 gerador.geraRETURNF(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
                 qtdVariaveisDalloc = 0;
             } else {
                 gerador.geraRETURNF();
             }
-            //}
+            }
 
-            /*else{
+            else{
              erroQuantidadeReturnfs();
-            }*/
+            }
         } else {
             if (qtdVariaveisDalloc > 0) {
                 gerador.geraDALLOC(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
@@ -313,6 +313,7 @@ public class AnalisadorSintatico {
             token = analisadorLexico.lexico();
             if (token.getSimbolo().equalsIgnoreCase("sIdentificador") && !errosSintaticos) {
                 if (pesquisaDeclaracaoVariavel(token.getLexema())) {
+                    
                     gerador.geraRD();
                     gerador.geraSTR(retornaPosicaoMemoria(token.getLexema()));
                     token = analisadorLexico.lexico();
@@ -628,6 +629,10 @@ public class AnalisadorSintatico {
                 }
 
             } else if ((token.getLexema().equalsIgnoreCase("verdadeiro") || token.getLexema().equalsIgnoreCase("falso")) && !errosSintaticos) {
+                Operando elemento = new Operando();
+                elemento.setLexema(token.getLexema());
+                elemento.setTipo(simbolos.getBooleano());
+                filaPosFixa.add(elemento);//add numero na saida pos fixa
                 token = analisadorLexico.lexico();
             } else {
                 mostraErros("verdadeiro ou falso");
@@ -1104,7 +1109,19 @@ public class AnalisadorSintatico {
                     if (pesquisaDeclaracaoVariavel(item.getLexema())) {// se entrar aqui eh um identificador, entao gera LDV
                         gerador.geraLDV(((Operando) item).getMemoria());
                     } else {// se entrar aqui eh um numero
+                        
+                        if (item.getLexema().contentEquals("verdadeiro")) {
+                             gerador.geraLDC(1);// se verdadeiro, colocar 1
+                        }
+                        
+                        else if(item.getLexema().contentEquals("falso")) {
+                        gerador.geraLDC(0);// se falso, colocar 0
+                        }
+                        
+                        else{
                         gerador.geraLDC(Integer.parseInt(item.getLexema()));//se entrar aqui eh um numero, entao gera LDC
+                        }
+                        
                     }
                 }
 

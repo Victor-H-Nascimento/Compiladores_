@@ -159,7 +159,6 @@ public class MaquinaVirtual {
                     break;
                 case "PRN":
                     funcoes.PRN();
-                    //valorPrint na interface inicial para printar no textArea
                     break;
                 case "RD":
                     funcoes.RD();

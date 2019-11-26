@@ -29,14 +29,15 @@ public class Funcoes {
 
     //getters e setter
     public int getI() {
-       return i;
+        return i;
     }
 
     public void setI() {
         i++;
     }
+
     public void setI(int a) {
-        i=a;
+        i = a;
     }
 
     //metodos abstratos
@@ -62,9 +63,9 @@ public class Funcoes {
 
     public void ADD() {  //somar  
         //M[s-1]:=M[s-1] + M[s]; s:=s - 1
-        int primeiroValor = (int)pilha.lastElement();
+        int primeiroValor = (int) pilha.lastElement();
         pilha.pop();
-        int segundoValor = (int)pilha.lastElement();
+        int segundoValor = (int) pilha.lastElement();
         pilha.pop();
         pilha.add(primeiroValor + segundoValor);
         s = pilha.size() - 1; //atualiza s
@@ -72,9 +73,9 @@ public class Funcoes {
 
     public void SUB() {
         //M[s-1]:=M[s-1] - M[s]; s:=s - 1
-         int primeiroValor = (int)pilha.lastElement();
+        int primeiroValor = (int) pilha.lastElement();
         pilha.pop();
-        int segundoValor = (int)pilha.lastElement();
+        int segundoValor = (int) pilha.lastElement();
         pilha.pop();
         pilha.add(segundoValor - primeiroValor);
         s = pilha.size() - 1; //atualiza s
@@ -82,9 +83,9 @@ public class Funcoes {
 
     public void MULT() {
         //M[s-1]:=M[s-1] * M[s]; s:=s - 1
-         int primeiroValor = (int)pilha.lastElement();
+        int primeiroValor = (int) pilha.lastElement();
         pilha.pop();
-        int segundoValor = (int)pilha.lastElement();
+        int segundoValor = (int) pilha.lastElement();
         pilha.pop();
         pilha.add(primeiroValor * segundoValor);
         s = pilha.size() - 1; //atualiza s
@@ -93,9 +94,9 @@ public class Funcoes {
     public void DIVI() {
         //M[s-1]:=M[s-1] / M[s]; s:=s - 1
 
-        int primeiroValor = (int)pilha.lastElement();
+        int primeiroValor = (int) pilha.lastElement();
         pilha.pop();
-        int segundoValor = (int)pilha.lastElement();
+        int segundoValor = (int) pilha.lastElement();
         pilha.pop();
         pilha.add(primeiroValor / segundoValor);
         s = pilha.size() - 1; //atualiza s
@@ -292,7 +293,21 @@ public class Funcoes {
     public void RD() {
         s = pilha.size(); //atualiza s
         System.out.println("Entrada de dados: ");
-        pilha.add(Interface.entradaDados());
+
+        String aux = Interface.entradaDados();
+
+        switch (aux) {
+            case "verdadeiro":
+                pilha.add(1);
+                break;
+            case "falso":
+                pilha.add(0);
+                break;
+            default:
+                pilha.add(Integer.parseInt(aux));
+                break;
+        }
+
     }
 
     public void PRN() {
@@ -362,7 +377,7 @@ public class Funcoes {
         RETURN();
         s++;//posicao do Topo
         pilha.add(aux);
-       
+
     }
 
     public void RETURNF() {

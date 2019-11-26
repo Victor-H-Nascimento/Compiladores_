@@ -391,16 +391,14 @@ public final class Interface extends javax.swing.JFrame {
         System.out.println("Linhas = "+model.getRowCount());*/
     }
 
-    public static int entradaDados() {
-        String input = JOptionPane.showInputDialog("Digite um numero:");
-        int entrada = Integer.parseInt(input);
-        return entrada;
+    public static String entradaDados() {
+        return JOptionPane.showInputDialog("Digite um numero ou verdadeiro/falso:");
+        
     }
     
      public static void saidaDados(int saida){
         String aux = (String) valueOf(saida);
-        int op = 0;
-        op = JOptionPane.showConfirmDialog(null,aux,"saida do print:",JOptionPane.DEFAULT_OPTION);
+        JOptionPane.showConfirmDialog(null,aux,"saida do print:",JOptionPane.DEFAULT_OPTION);
     }
 
     public static void main(String args[]) {
