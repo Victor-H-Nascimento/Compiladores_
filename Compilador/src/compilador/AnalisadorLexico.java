@@ -14,8 +14,8 @@ import java.io.IOException;
  */
 public final class AnalisadorLexico {
 
-    private  Arquivo arq = new Arquivo();
-    private  Funcoes c = new Funcoes();
+    private final  Arquivo arq = new Arquivo();
+    private final  Funcoes c = new Funcoes();
     private  Token token;
     private  String caracter;
     private  boolean errosLexicos = false;

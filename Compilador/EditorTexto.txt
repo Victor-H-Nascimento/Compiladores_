@@ -1,32 +1,24 @@
 {Teste 1 - OK}
 programa test1;
 
-var a: inteiro;
+var a,b: booleano;
 
-funcao fatorial: inteiro;
-var b: inteiro;
+funcao analisa3: booleano;
 
 inicio
+ 
+se a = verdadeiro
 
-se a <= 1 entao fatorial:= 1
+entao analisa3 := verdadeiro
+senao analisa3:= falso;
 
-senao 
-inicio 
-	b := a;	
-	a := a-1; 
-	fatorial:= fatorial * b;
-	  
-fim;
-	
+
+
 fim;
 
 inicio
-     leia(a);
-     a := fatorial;
-     
+	leia(a);
+	b := analisa3;
 fim.
 
-{fim}
-
-
-
+{fim}   

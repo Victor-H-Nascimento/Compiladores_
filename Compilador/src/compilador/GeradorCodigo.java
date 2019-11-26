@@ -20,8 +20,6 @@ public class GeradorCodigo {
 
 
     public GeradorCodigo() throws IOException {
-       // FileWriter arq = new FileWriter("saidaCompilador.txt");
-        //gravarArq = new PrintWriter(arq);
     }
 
     public void geraLDC(int valor) {

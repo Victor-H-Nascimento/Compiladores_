@@ -18,6 +18,7 @@ public class Inicial {
         InterfaceEditor primeiraInterface = new InterfaceEditor();
         primeiraInterface.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         primeiraInterface.setLocationRelativeTo(null);
+        primeiraInterface.setResizable(false);
         primeiraInterface.setVisible(true);
 }
     

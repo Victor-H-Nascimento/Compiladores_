@@ -18,30 +18,25 @@ public class Arquivo {
 
     }
 
-     public void Ler(String Caminho, Funcoes c) {
+    public void Ler(String Caminho, Funcoes c) {
 
         try {
-            FileReader arq = new FileReader(Caminho);
-            BufferedReader lerArq = new BufferedReader(arq);
+            arq = new FileReader(Caminho);
+            lerArq = new BufferedReader(arq);
             boolean continua = true;
-            
+
             try {
 
                 do {
-                    
-                    //linha = lerArq.read();
-                    //c.leArquivo(Character.toString((char) linha));
+
                     String aux = lerArq.readLine();
-                    
+
                     if (aux != null) {
-                         c.leArquivo(aux);
-                    }
-                    
-                    else{
+                        c.leArquivo(aux);
+                    } else {
                         continua = false;
                     }
-                    
-                    //System.out.println("Oq estou lendo?" + lerArq.readLine());
+
                 } while (continua);
 
                 arq.close();
@@ -53,6 +48,5 @@ public class Arquivo {
             System.out.println("Erro: Arquivo não encontrado!");
         }
     }
-     
 
 }

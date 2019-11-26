@@ -8,7 +8,6 @@ package maquina.virtual;
 import java.awt.Color;
 import java.awt.Component;
 import static java.lang.String.valueOf;
-import java.util.Scanner;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -23,8 +22,6 @@ public final class Interface extends javax.swing.JFrame {
 
     private MaquinaVirtual mv = new MaquinaVirtual();
     public int indiceLinha = 0;
-    private final Scanner scanner = new Scanner(System.in);
-    public int entrada;
 
     public Interface() {
         initComponents();
@@ -59,9 +56,6 @@ public final class Interface extends javax.swing.JFrame {
         pilhaJump = new javax.swing.JTable();
         passoApasso = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
-        menuFile = new javax.swing.JMenu();
-        menuFileAbrir = new javax.swing.JMenuItem();
-        menuFileExportar = new javax.swing.JMenuItem();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -187,26 +181,6 @@ public final class Interface extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        menuFile.setText("File");
-
-        menuFileAbrir.setText("Abrir");
-        menuFileAbrir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuFileAbrirActionPerformed(evt);
-            }
-        });
-        menuFile.add(menuFileAbrir);
-
-        menuFileExportar.setText("Exportar");
-        menuFileExportar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuFileExportarActionPerformed(evt);
-            }
-        });
-        menuFile.add(menuFileExportar);
-
-        menuBar.add(menuFile);
-
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -224,14 +198,6 @@ public final class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void menuFileExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileExportarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuFileExportarActionPerformed
-
-    private void menuFileAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileAbrirActionPerformed
-
-    }//GEN-LAST:event_menuFileAbrirActionPerformed
-
 
     private void passoApassoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passoApassoMouseClicked
         // TODO add your handling code here:
@@ -244,7 +210,6 @@ public final class Interface extends javax.swing.JFrame {
                 final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setBackground(Color.RED);
                 return c;
-                //row == indiceLinha? Color.green : Color.white
             }
 
         });
@@ -254,7 +219,6 @@ public final class Interface extends javax.swing.JFrame {
         tabelaExec.setForeground(Color.blue);
         //indiceLinha=mv.funcoes.getI();
         String comando = mv.executarFuncoes();
-        System.out.println("indice: " + indiceLinha);
         preencherPilha();
         if("HLT".equals(comando)){
             indiceLinha = 0;
@@ -269,7 +233,6 @@ public final class Interface extends javax.swing.JFrame {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        //System.out.println("Entrou preencher " + linha); //apenas para verificacao
         String instrucao = null, param1 = null, param2 = null, aux;
         DefaultTableModel model = (DefaultTableModel) tabelaExec.getModel();
 
@@ -318,8 +281,6 @@ public final class Interface extends javax.swing.JFrame {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        //System.out.println("Entrou preencher " + linha); //apenas para verificacao
-        // String instrucao = null, param1 = null, param2 = null, aux;
         DefaultTableModel model = (DefaultTableModel) pilhaJump.getModel();
         String[] rowData = new String[pilhaJump.getColumnCount()];   //para adicionar na tabela
 
@@ -343,13 +304,10 @@ public final class Interface extends javax.swing.JFrame {
         
         int aux = mv.funcoes.pilha.size() - 1;
 
-        System.out.println("Tabela [" + (aux + 1) + "] [1]");
         Object[][] tabelaDados = new Object[aux + 1][1];
 
         for (int j = 0; j <= mv.funcoes.pilha.size() - 1; j++) {
             int indice = mv.funcoes.pilha.size() - 1 - j;
-            System.out.println("Ind " + indice);
-            System.out.println("Colocar " + (int) mv.funcoes.pilha.get(j));
             tabelaDados[indice][0] = (int) mv.funcoes.pilha.get(j);
         }
 
@@ -368,27 +326,6 @@ public final class Interface extends javax.swing.JFrame {
                 return canEdit[columnIndex];
             }
         });
-
-        /*DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        
-         DefaultTableModel model = (DefaultTableModel) pilhaDados.getModel();
-        String[] rowData = new String[pilhaDados.getColumnCount()];   //para adicionar na tabela
-        
-        for (int i = 0; i < pilhaDados.getColumnCount(); i++) {
-            pilhaDados.getColumnModel().getColumn(i).setCellRenderer(centerRenderer); //centraliza o conteudo de cada coluna
-        }
-        
-      
-       
-        pilha = c.pilhaInteira();
-        System.out.println("Tamanho da pilha = " + pilha.topo());
-        for (int j = 0; j <= pilha.topo(); j++) {
-            System.out.println("Colocar " + pilha.busca(j));
-            rowData[0] = Integer.toString(pilha.busca(j));
-            model.addRow(rowData);
-        }
-        System.out.println("Linhas = "+model.getRowCount());*/
     }
 
     public static String entradaDados() {
@@ -398,7 +335,7 @@ public final class Interface extends javax.swing.JFrame {
     
      public static void saidaDados(int saida){
         String aux = (String) valueOf(saida);
-        JOptionPane.showConfirmDialog(null,aux,"saida do print:",JOptionPane.DEFAULT_OPTION);
+        JOptionPane.showConfirmDialog(null,aux,"PRN",JOptionPane.DEFAULT_OPTION);
     }
 
     public static void main(String args[]) {
@@ -441,9 +378,6 @@ public final class Interface extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable2;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenu menuFile;
-    private javax.swing.JMenuItem menuFileAbrir;
-    private javax.swing.JMenuItem menuFileExportar;
     private javax.swing.JButton passoApasso;
     private javax.swing.JTable pilhaDados;
     private javax.swing.JTable pilhaJump;

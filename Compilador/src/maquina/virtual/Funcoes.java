@@ -4,7 +4,6 @@
 package maquina.virtual;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -19,7 +18,6 @@ public class Funcoes {
     private final int numeroNULL;
     public Stack pilha = new Stack();
     public ArrayList<Object> fila = new ArrayList();
-    private final Scanner scanner = new Scanner(System.in);
 
     //construtor
     public Funcoes() {
@@ -38,14 +36,6 @@ public class Funcoes {
 
     public void setI(int a) {
         i = a;
-    }
-
-    //metodos abstratos
-    public void PRINTAPILHA() {
-        for (int j = pilha.size() - 1; j >= 0; j--) {
-            int primeiroValor = (int) pilha.elementAt(j);
-            System.out.println(" s-> " + j + "       " + "|" + primeiroValor + "|");
-        }
     }
 
     public void LDC(int k) {//carrega constante
@@ -262,16 +252,13 @@ public class Funcoes {
 
     public void STR(int n) {
         //M[n]:=M[s]; s:=s-1
-        if (pilha.size() - 1 >= 1 && n <= pilha.size() - 1) {
+        
             int primeiroValor = (int) pilha.elementAt(pilha.size() - 1);
             pilha.remove(n);// se this.s == 1, entao n tem q ser obrigatoriamente 0
             pilha.insertElementAt(primeiroValor, n);
             pilha.pop();
             s = pilha.size() - 1; //atualiza s   
-        } else {
-            System.out.println("Nao chamou funcao STR " + s);
-        }
-
+        
     }
 
     public void JMP(int t) {
@@ -292,7 +279,6 @@ public class Funcoes {
 
     public void RD() {
         s = pilha.size(); //atualiza s
-        System.out.println("Entrada de dados: ");
 
         String aux = Interface.entradaDados();
 
@@ -312,7 +298,6 @@ public class Funcoes {
 
     public void PRN() {
         int primeiroValor = (int) pilha.elementAt(pilha.size() - 1);
-        System.out.println(" PRN s-> " + s + "       " + "|" + primeiroValor + "|");
         Interface.saidaDados(primeiroValor);
         pilha.pop();//remove o topo
         s = pilha.size() - 1; //atualiza s

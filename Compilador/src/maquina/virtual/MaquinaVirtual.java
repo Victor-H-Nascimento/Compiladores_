@@ -23,7 +23,6 @@ public class MaquinaVirtual {
         //do {
         String retorno = funcoes.fila.get(funcoes.getI()).toString();
         linha = String.valueOf(retorno);
-        System.out.println("Lido " + linha);
 
         if (linha.contains(" ")) {
 
@@ -34,9 +33,6 @@ public class MaquinaVirtual {
                 aux = linha.split(" ")[1];
                 primeiroParametro = aux.split(",")[0];
                 segundoParametro = aux.split(",")[1];
-                System.out.println(nomeFuncao);
-                System.out.println(primeiroParametro);
-                System.out.println(segundoParametro);
 
                 switch (nomeFuncao) {
                     case "ALLOC":
@@ -57,8 +53,6 @@ public class MaquinaVirtual {
 
                 nomeFuncao = linha.split(" ")[0];
                 primeiroParametro = linha.split(" ")[1];
-                System.out.println(nomeFuncao);
-                System.out.println(primeiroParametro);
 
                 if ("NULL".equals(primeiroParametro)) {//Se ler alguma linha de NULL, Ex. L1 NULL
                     funcoes.NULL();
@@ -70,7 +64,6 @@ public class MaquinaVirtual {
 
                             for (ListaAuxiliar itemLista : filaJMP) {
                                 if (itemLista.getLabel().equals(primeiroParametro) && itemLista.getInstrucao().contains("CALL")) {
-                                    System.out.println("Call para posicao " + itemLista.getIndice());
                                     funcoes.CALL(itemLista.getIndice());
                                 }
                             }
@@ -100,7 +93,7 @@ public class MaquinaVirtual {
                             funcoes.STR(Integer.parseInt(primeiroParametro));
                             break;
                         default:
-                            System.out.println("Erro: Nenhuma funcao com 1 parametro foi chamada " + nomeFuncao + " " + primeiroParametro);
+                            System.err.println("Erro: Nenhuma funcao com 1 parametro foi chamada " + nomeFuncao + " " + primeiroParametro);
                     }
                 }
 
@@ -108,7 +101,6 @@ public class MaquinaVirtual {
         } else {
             //sem parametros
             //chamar a funcao
-            System.out.println(linha);
             nomeFuncao = linha;
 
             switch (linha) {
@@ -175,10 +167,6 @@ public class MaquinaVirtual {
                 case "SUB":
                     funcoes.SUB();
                     break;
-                case "PRINTAPILHA":
-                    funcoes.PRINTAPILHA();
-                    break;
-
                 default:
                     System.err.println("Erro: Nenhuma funcao sem parametros foi chamada");
             }
@@ -186,9 +174,6 @@ public class MaquinaVirtual {
 
         funcoes.fila.add(linha);
         funcoes.setI();
-        funcoes.PRINTAPILHA();
-        System.out.println("" + "******************************************************************************************" + "");
-        //} while (!linha.contains("HLT"));
         //sempre que executar uma linha, atualizar o i com a funcao setI 
 
         return nomeFuncao;

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
@@ -26,8 +27,8 @@ import javax.swing.text.DefaultHighlighter;
  */
 public class InterfaceEditor extends javax.swing.JFrame {
 
-    String path;
-    Interface interfaces;
+    private final String path;
+    private Interface interfaces;
     private boolean interfaceJaInstanciada = false;
     /**
      * Creates new form InterfaceEditor
@@ -36,7 +37,6 @@ public class InterfaceEditor extends javax.swing.JFrame {
 
     public InterfaceEditor() throws IOException {
         this.path = "EditorTexto.txt";
-        //   interfaces = new Interface();
         initComponents();
     }
 
@@ -190,37 +190,10 @@ public class InterfaceEditor extends javax.swing.JFrame {
                 interfaces.setResizable(false);
                 interfaces.setLocationRelativeTo(this);
                 interfaces.setVisible(true);
-
+                interfaces.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             } else {
                 jTextAreaDeErros.setForeground(Color.RED);
                 jTextAreaDeErros.setText(sintatico.getFraseContendoErro());
-
-                /* Color corLinhaErro = new Color(255, 0, 0); // Color white
-                // int pos2 = textArea.getText().indexOf(turnToString2);
-
-                try {
-
-                    if (sintatico.getToken().getLinhaCodigo() > 0) {
-                        String str[] = jTextAreaDeCodigo.getText().split("\n");
-
-                        String linhaDoErro = str[sintatico.getToken().getLinhaCodigo() - 1];
-                        String[] conteudoErro = linhaDoErro.split(sintatico.getToken().getLexema());
-                        int inicioToken = jTextAreaDeCodigo.getText().indexOf(str[sintatico.getToken().getLinhaCodigo() - 1]) + conteudoErro[0].length()-1;
-                        int finalToken = inicioToken + sintatico.getToken().getLexema().length();
-                        System.out.println("I " + inicioToken + "F " + finalToken);
-                        try {//coloca a cor entre o intervalo
-                            jTextAreaDeCodigo.getHighlighter().removeAllHighlights();
-                            jTextAreaDeCodigo.getHighlighter().addHighlight(inicioToken, finalToken, new DefaultHighlighter.DefaultHighlightPainter(corLinhaErro));
-                        } catch (BadLocationException ex) {
-                            Logger.getLogger(InterfaceEditor.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        jTextAreaDeCodigo.requestFocus();//atualiza a tele(?)
-
-                    }
-
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Invalid option");
-                }*/
             }
 
         } catch (IOException ex) {
@@ -263,8 +236,6 @@ public class InterfaceEditor extends javax.swing.JFrame {
             }
             jTextAreaDeCodigo.requestFocus();//atualiza a tele(?)
         }
-
-
     }//GEN-LAST:event_jTextAreaDeCodigoMouseClicked
 
 

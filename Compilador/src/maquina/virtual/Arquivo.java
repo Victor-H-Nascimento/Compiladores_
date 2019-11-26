@@ -60,6 +60,7 @@ public class Arquivo {
                         for (ListaAuxiliar verificacao : fila) {
                             if (i == verificacao.getIndice()) {
                                 jaExiste = true;
+                                break;
                             }
                         }
 
