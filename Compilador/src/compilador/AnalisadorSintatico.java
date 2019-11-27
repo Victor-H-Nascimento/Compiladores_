@@ -31,9 +31,7 @@ public class AnalisadorSintatico {
     private int qtdVariaveisAlloc = 0;
     private int qtdVariaveisDalloc = 0;
     private boolean chamadaFuncao = false;
-    private boolean isFuncao = false;
     private final Stack<String> filaFuncProc = new Stack();
-    private int qtdInicio = 0;
 
     AnalisadorSintatico(AnalisadorLexico analisadorLexico) throws IOException {
         this.analisadorLexico = analisadorLexico;
@@ -84,14 +82,6 @@ public class AnalisadorSintatico {
                     if (token.getSimbolo().contentEquals(simbolos.getPonto())) {
                         gerador.geraHLT();
                         //se acabou arquivo ou é comentário   então sucesso
-                        //senao ERRO
-
-                        for (int i = 0; i < filaPosFixa.size(); i++) {
-
-                            System.out.print(filaPosFixa.get(i).getLexema() + " ");
-
-                        }
-                        System.out.println("");
 
                     } else {
                         mostraErros(".");
@@ -145,12 +135,11 @@ public class AnalisadorSintatico {
         }
 
         
-        if ( !filaFuncProc.isEmpty()) {
+        if (!filaFuncProc.isEmpty()) {
             tipoSubRotina = filaFuncProc.peek();
         }
         
         if (tipoSubRotina.contentEquals("funcao")) {
-           // isFuncao = false;
 
             if (qtdVariaveisDalloc > 0) {
                 gerador.geraRETURNF(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
@@ -255,10 +244,7 @@ public class AnalisadorSintatico {
 
     private void analisaComandos() throws IOException {
         if (token.getSimbolo().contentEquals(simbolos.getInicio()) && !errosSintaticosSemantico) {
-          /*  if (flag == 1 && qtdInicio == 0) {
-                flag = 0;
-                gerador.geraNULL(1);
-            }*/
+
             token = analisadorLexico.lexico();
             analisaComandoSimples();
 
@@ -477,11 +463,9 @@ public class AnalisadorSintatico {
                 if (token.getSimbolo().contentEquals(simbolos.getPontoVirgula()) && !errosSintaticosSemantico) {
                     gerador.geraNULL(rotuloLabel);
                     incrementaRotuloLabel();
-                    qtdInicio++;
                      filaFuncProc.add("procedimento");
                     analisaBloco();
                     filaFuncProc.pop();
-                    qtdInicio--;
                     gerador.geraRETURN();
                 } else {
                     mostraErros(";");
@@ -518,13 +502,9 @@ public class AnalisadorSintatico {
                         if (token.getSimbolo().contentEquals(simbolos.getPontoVirgula())) {
                             gerador.geraNULL(rotuloLabel);
                             incrementaRotuloLabel();
-                            isFuncao = true;
                             filaFuncProc.add("funcao");
-                            qtdInicio++;
                             analisaBloco();
-                            qtdInicio--;
                             filaFuncProc.pop();
-                            isFuncao = false;
                         }
                     } else {
                         mostraErros("inteiro ou booleano");
