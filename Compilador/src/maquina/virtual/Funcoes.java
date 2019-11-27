@@ -57,7 +57,7 @@ public class Funcoes {
         pilha.pop();
         int segundoValor = (int) pilha.lastElement();
         pilha.pop();
-        pilha.add(primeiroValor + segundoValor);
+        pilha.add(segundoValor + primeiroValor);
         s = pilha.size() - 1; //atualiza s
     }
 
@@ -77,7 +77,7 @@ public class Funcoes {
         pilha.pop();
         int segundoValor = (int) pilha.lastElement();
         pilha.pop();
-        pilha.add(primeiroValor * segundoValor);
+        pilha.add(segundoValor * primeiroValor);
         s = pilha.size() - 1; //atualiza s
     }
 
@@ -88,14 +88,15 @@ public class Funcoes {
         pilha.pop();
         int segundoValor = (int) pilha.lastElement();
         pilha.pop();
-        pilha.add(primeiroValor / segundoValor);
+        pilha.add(segundoValor / primeiroValor);
         s = pilha.size() - 1; //atualiza s
     }
 
     public void INV() {
-        // M[s]:= -M[s] 
-        pilha.add((int) pilha.elementAt(pilha.size() - 1) * -1);
+        // M[s]:= -M[s]
+        int valor =  (int) pilha.elementAt(pilha.size() - 1) * -1; 
         pilha.pop();//remove o topo
+        pilha.add(valor);
     }
 
     public void AND() {
