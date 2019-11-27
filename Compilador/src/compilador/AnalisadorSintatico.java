@@ -1103,8 +1103,10 @@ public class AnalisadorSintatico {
     }
 
     private void erroTipoExpressao() {
+        if(fraseContendoErro.contentEquals("")){
         fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Tipo da expressao é incompatível com o tipo do comando.");
         errosSintaticosSemantico = true;
+        }
     }
 
     private void geraCodigoPosFixa(ArrayList<ElementosPosFixa> filaPosFixa) {
