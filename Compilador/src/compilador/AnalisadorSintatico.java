@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+//Correcao de codigo
 package compilador;
 
 import java.io.IOException;
@@ -76,7 +77,7 @@ public class AnalisadorSintatico {
                 token = analisadorLexico.lexico();
 
                 if (token.getSimbolo().contentEquals(simbolos.getPontoVirgula()) && !analisadorLexico.contemErrosLexicos() && !errosSintaticosSemantico) {
-                     filaFuncProc.add("procedimento");
+                    filaFuncProc.add("procedimento");
                     analisaBloco();
                     filaFuncProc.pop();
                     if (token.getSimbolo().contentEquals(simbolos.getPonto())) {
@@ -134,11 +135,10 @@ public class AnalisadorSintatico {
             pilhaTabelaDeSimbolos.lastElement().setEscopo(false);
         }
 
-        
         if (!filaFuncProc.isEmpty()) {
             tipoSubRotina = filaFuncProc.peek();
         }
-        
+
         if (tipoSubRotina.contentEquals("funcao")) {
 
             if (qtdVariaveisDalloc > 0) {
@@ -147,8 +147,8 @@ public class AnalisadorSintatico {
             } else {
                 gerador.geraRETURNF();
             }
-            
-        } else if(tipoSubRotina.contentEquals("procedimento")) {
+
+        } else if (tipoSubRotina.contentEquals("procedimento")) {
             if (qtdVariaveisDalloc > 0) {
                 gerador.geraDALLOC(posicaoIncialDalloc - qtdVariaveisDalloc, qtdVariaveisDalloc);
                 qtdVariaveisDalloc = 0;
@@ -159,7 +159,6 @@ public class AnalisadorSintatico {
 
     private void analisaEtapaVariaveis() throws IOException {
 
-        
         if (token.getSimbolo().contentEquals(simbolos.getVar()) && !errosSintaticosSemantico) {
 
             token = analisadorLexico.lexico();
@@ -426,7 +425,7 @@ public class AnalisadorSintatico {
         int labelFlag = 0;
         if (token.getSimbolo().contentEquals(simbolos.getProcedimento()) || token.getSimbolo().contentEquals(simbolos.getFuncao())) {
             gerador.geraJMP(rotuloLabel);
-           labelFlag = rotuloLabel;
+            labelFlag = rotuloLabel;
             incrementaRotuloLabel();
             flag = 1;
         }
@@ -442,7 +441,7 @@ public class AnalisadorSintatico {
                 mostraErros(";");
             }
         }
-        
+
         if (flag == 1) {
             gerador.geraNULL(labelFlag);
         }
@@ -463,7 +462,7 @@ public class AnalisadorSintatico {
                 if (token.getSimbolo().contentEquals(simbolos.getPontoVirgula()) && !errosSintaticosSemantico) {
                     gerador.geraNULL(rotuloLabel);
                     incrementaRotuloLabel();
-                     filaFuncProc.add("procedimento");
+                    filaFuncProc.add("procedimento");
                     analisaBloco();
                     filaFuncProc.pop();
                     gerador.geraRETURN();
@@ -571,16 +570,15 @@ public class AnalisadorSintatico {
             //semantico
             if (pesquisaDeclaracaoFuncaoVariavel(token.getLexema())) {//lexema
                 if (pesquisaTipoFuncao(token)) {
-                    analisaChamadaFuncao();
-                    if (!filaFuncProc.peek().contentEquals("funcao")) {//!isFuncao
-                        chamadaFuncao = true;
-                    } else {
-                        Operando elemento = new Operando();// entra aqui se for uma funcao dentro da posfixa
-                        elemento.setLexema("null");
-                        elemento.setTipo(preencheTipoFuncao(tokenAuxiliar));
-                        filaPosFixa.add(elemento);
-                    }
 
+                    if (!filaFuncProc.peek().contentEquals("funcao")) {//!isFuncao
+                        chamadaFuncao = true;// entra aqui se for uma funcao dentro da posfixa
+                    }
+                    Operando elemento = new Operando();// entra aqui se for uma funcao dentro da posfixa
+                    elemento.setLexema(token.getLexema());
+                    elemento.setTipo(preencheTipoFuncao(token));
+                    filaPosFixa.add(elemento);
+                    analisaChamadaFuncao();
                 } else {
 
                     Operando elemento = new Operando();
@@ -648,8 +646,8 @@ public class AnalisadorSintatico {
             token = analisadorLexico.lexico();
             analisaExpressao();// ver condicao do retorno
             fimInFixa();
-            if (!chamadaFuncao) {// se nao for uma chamada de funcao
-                String retorno = verificaPosFixa();
+            String retorno = verificaPosFixa();
+            if (!chamadaFuncao) {// se for recurssao
                 if (!retorno.contentEquals(pesquisaTipoVariavel(tokenAuxiliar.getLexema())) && !errosSintaticosSemantico) {// erro se o tipo da variavel/funcao do lado esquerdo for diferente do tipo da expressao
                     erroTipoExpressao();
                 } else {
@@ -657,21 +655,25 @@ public class AnalisadorSintatico {
                 }
             } else {
                 chamadaFuncao = false;
+                gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));
             }
             analiseAtribuicao = "erro";
 
-        } else if (analiseAtribuicao.contentEquals("funcao")) {
+        } else if (analiseAtribuicao.contentEquals("funcao")) {// retorno de funcao
             if (filaFuncProc.peek().contentEquals("funcao")) { //isfuncao
                 token = analisadorLexico.lexico();
                 analisaExpressao();// ver condicao do retorno
                 fimInFixa();
-                if (!chamadaFuncao) {
-                    String retorno = verificaPosFixa();
-                    if (!retorno.contentEquals(pesquisaTipoVariavel(tokenAuxiliar.getLexema())) && !errosSintaticosSemantico ) {// erro se o tipo da variavel/funcao do lado esquerdo for diferente do tipo da expressao
+                String retorno = verificaPosFixa();
+                if (!chamadaFuncao) {// se for recurssao
+                    if (!retorno.contentEquals(pesquisaTipoVariavel(tokenAuxiliar.getLexema())) && !errosSintaticosSemantico) {// erro se o tipo da variavel/funcao do lado esquerdo for diferente do tipo da expressao
                         erroTipoExpressao();
+                    } else {
+                        //    gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));
                     }
                 } else {
                     chamadaFuncao = false;
+                    gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));
                 }
                 analiseAtribuicao = "erro";
             } else {
@@ -698,12 +700,6 @@ public class AnalisadorSintatico {
     private void analisaChamadaFuncao() throws IOException {
 
         if (pesquisaDeclaracaoFuncao(token.getLexema())) {// entra aqui se nao houve nenhum errado na declaracao do procedimento
-
-            if (!filaFuncProc.peek().contentEquals("funcao")) {//!isfuncao
-                gerador.geraCALL(pesquisaLabelProcedimentoFuncao(token.getLexema()));
-                gerador.geraSTR(retornaPosicaoMemoria(tokenAuxiliar.getLexema()));// antes, verificar se tipo de retorno eh igual ao tipo da variavel    
-            }
-
             token = analisadorLexico.lexico();
         } else {
             erroSemanticoLadoDireitoChamadaFuncao();
@@ -1083,9 +1079,9 @@ public class AnalisadorSintatico {
     }
 
     private void erroTipoExpressao() {
-        if(fraseContendoErro.contentEquals("")){
-        fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Tipo da expressao é incompatível com o tipo do comando.");
-        errosSintaticosSemantico = true;
+        if (fraseContendoErro.contentEquals("")) {
+            fraseContendoErro = fraseContendoErro.concat("Linha " + Integer.toString(token.getLinhaCodigo()) + " - Erro Semantico: " + "Tipo da expressao é incompatível com o tipo do comando.");
+            errosSintaticosSemantico = true;
         }
     }
 
@@ -1093,24 +1089,56 @@ public class AnalisadorSintatico {
         for (ElementosPosFixa item : filaPosFixa) {
             if (item instanceof Operando) {
 
-                if (item.getLexema().contentEquals("null")) {
-                    gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
-                } else {
-                    if (pesquisaDeclaracaoVariavel(item.getLexema())) {// se entrar aqui eh um identificador, entao gera LDV
-                        gerador.geraLDV(((Operando) item).getMemoria());
-                    } else {// se entrar aqui eh um numero
+                switch (item.getLexema()) {
 
-                        if (item.getLexema().contentEquals("verdadeiro")) {
-                            gerador.geraLDC(1);// se verdadeiro, colocar 1
-                        } else if (item.getLexema().contentEquals("falso")) {
-                            gerador.geraLDC(0);// se falso, colocar 0
-                        } else {
-                            gerador.geraLDC(Integer.parseInt(item.getLexema()));//se entrar aqui eh um numero, entao gera LDC
+                    case "verdadeiro":
+                        gerador.geraLDC(1);// se verdadeiro, colocar 1
+                        break;
+
+                    case "falso":
+                        gerador.geraLDC(0);// se falso, colocar 0
+                        break;
+
+                    default:
+
+                        if (pesquisaDeclaracaoFuncao(item.getLexema())) {
+                            gerador.geraCALL(pesquisaLabelProcedimentoFuncao(item.getLexema()));
+                        } else {// senao, eh um numero ou identificador
+
+                            if (pesquisaDeclaracaoVariavel(item.getLexema())) {
+                                gerador.geraLDV(((Operando) item).getMemoria());// se entrar aqui eh identificador
+                            } else {
+                                gerador.geraLDC(Integer.parseInt(item.getLexema()));//se entrar aqui eh um numero, entao gera LDC
+                            }
+
                         }
 
-                    }
+                        break;
                 }
 
+                /* if (item.getLexema().contentEquals("null")) {
+                    gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
+                } else {
+
+                    if (item.getLexema().contentEquals("f1")) {
+                        gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
+                    } else {
+                        if (pesquisaDeclaracaoVariavel(item.getLexema())) {// se entrar aqui eh um identificador, entao gera LDV
+                            gerador.geraLDV(((Operando) item).getMemoria());
+                        } else {// se entrar aqui eh um numero
+
+                            if (item.getLexema().contentEquals("verdadeiro")) {
+                                gerador.geraLDC(1);// se verdadeiro, colocar 1
+                            } else if (item.getLexema().contentEquals("falso")) {
+                                gerador.geraLDC(0);// se falso, colocar 0
+                            } else {
+                                gerador.geraLDC(Integer.parseInt(item.getLexema()));//se entrar aqui eh um numero, entao gera LDC
+                            }
+
+                        }
+                    }
+
+                }*/
             } else {// se for operador entra aqui, entao identifica qual operador eh e chama o gerador pra ele
 
                 switch (item.getLexema()) {

@@ -327,7 +327,7 @@ public class Funcoes {
 
     public void DALLOC(int m, int n) {
         //DALLOC  m,n      (Desalocar memória): Para  k:=n-1  até 0  faça       {M[m+k]:=M[s]; s:=s - 1} 
-        for (int k = 0; k <= n - 1; k++) {
+        for (int k = n-1; k >=0; k--) {
 
             if (m + k <= pilha.size() - 1) {
                 int aux = (int) pilha.lastElement();
