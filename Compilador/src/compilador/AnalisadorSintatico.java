@@ -1072,8 +1072,8 @@ public class AnalisadorSintatico {
 
         Operando resposta = (Operando) filaPosFixa.get(0);
 
-        filaPosFixa.clear();;// reseta fila da pos fixa apos fim da expressao
-
+        filaPosFixa.clear();// reseta fila da pos fixa apos fim da expressao
+        
         return resposta.getTipo();
 
     }
@@ -1115,30 +1115,6 @@ public class AnalisadorSintatico {
 
                         break;
                 }
-
-                /* if (item.getLexema().contentEquals("null")) {
-                    gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
-                } else {
-
-                    if (item.getLexema().contentEquals("f1")) {
-                        gerador.geraCALL(pesquisaLabelProcedimentoFuncao(tokenAuxiliar.getLexema()));
-                    } else {
-                        if (pesquisaDeclaracaoVariavel(item.getLexema())) {// se entrar aqui eh um identificador, entao gera LDV
-                            gerador.geraLDV(((Operando) item).getMemoria());
-                        } else {// se entrar aqui eh um numero
-
-                            if (item.getLexema().contentEquals("verdadeiro")) {
-                                gerador.geraLDC(1);// se verdadeiro, colocar 1
-                            } else if (item.getLexema().contentEquals("falso")) {
-                                gerador.geraLDC(0);// se falso, colocar 0
-                            } else {
-                                gerador.geraLDC(Integer.parseInt(item.getLexema()));//se entrar aqui eh um numero, entao gera LDC
-                            }
-
-                        }
-                    }
-
-                }*/
             } else {// se for operador entra aqui, entao identifica qual operador eh e chama o gerador pra ele
 
                 switch (item.getLexema()) {
